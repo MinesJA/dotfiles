@@ -1,3 +1,12 @@
+local function organize_imports()
+  local params = {
+    command = "_typescript.organizeImports",
+    arguments = {vim.api.nvim_buf_get_name(0)},
+    title = ""
+  }
+  vim.lsp.buf.execute_command(params)
+end
+
 return {
     "neovim/nvim-lspconfig",
     dependencies = {
@@ -20,7 +29,8 @@ return {
             "force",
             {},
             vim.lsp.protocol.make_client_capabilities(),
-            cmp_lsp.default_capabilities())
+            cmp_lsp.default_capabilities()
+        )
 
         require("fidget").setup({})
         require("mason").setup()
@@ -33,6 +43,19 @@ return {
                     require("lspconfig")[server_name].setup {
                         capabilities = capabilities
                     }
+                end,
+
+                ["tsserver"] = function()
+                  local lspconfig = require("lspconfig")
+                  lspconfig.tsserver.setup {
+                    capabilities = capabilities,
+                    commands = {
+                      OrganizeImports = {
+                        organize_imports,
+                        description = "Organize Imports"
+                      }
+                    }
+                  }
                 end,
 
                 ["lua_ls"] = function()

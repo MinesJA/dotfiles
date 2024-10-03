@@ -7,3 +7,30 @@ See: `.stow-local-ignore`
 ## Video
 https://youtu.be/y6XCebnB9gs?si=iG9gFPJ2yeaWFk8d
 
+
+
+## Configurations
+### Tmux
+[Video Tutorial](
+https://www.youtube.com/watch?v=DzNmUNvnB04&ab_channel=DreamsofCode)
+
+Using TPM - Tmux Plugin Manager
+[Git Repo](https://github.com/tmux-plugins/tpm)
+
+Need to clone it before being able to install plugins (see readme).
+
+Then
+
+`prefix + I` to install in a Tmux session
+
+## Wezterm config
+
+
+### P10K
+
+#### Arch
+
+Followed [this guide](https://davidtsadler.com/posts/arch/2020-09-07/installing-zsh-and-powerlevel10k-on-arch-linux/)
+
+
+
