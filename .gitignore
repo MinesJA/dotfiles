@@ -1,0 +1,5 @@
+.config/wezterm/extra/ssh.lua
+.config/tmux/plugins
+.config/zsh/work_aliases.zsh
+.config/zsh/release_script.zsh
+.config/zsh/kubectl_aliases.zsh
