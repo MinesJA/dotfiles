@@ -17,32 +17,32 @@ export NVM_DIR="$HOME/.nvm"
 export PATH="$PATH:$HOME/go/bin"
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 export PATH="/usr/local/bin:$PATH"
-
-# Added by workstation/bin/install_workstation.sh
 export PATH=/Users/jonathan.mines/bin:$PATH
-
 export PATH="$PATH:$HOME/.rvm/bin"
 
 export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-11.jdk"
 eval "$(fzf --zsh)"
 
-if [ -f ~/.config/zsh/github_token ]; then
-    source ~/.config/zsh/github_token
+if [ -e ~/dotfiles/.config/zsh/github_token.zsh ]; then
+  source ~/dotfiles/.config/zsh/github_token.zsh
 else
-  echo "ERROR: GITHUB_TOKEN env variable not configured"
+  echo "github_token file does not exist"
+fi
+
+if [ -e ~/dotfiles/.config/zsh/work_aliases.zsh ]; then
+    source ~/dotfiles/.config/zsh/work_aliases.zsh
+else
+  echo "work_aliases file does not exist"
+fi
+
+if [ -e ~/dotfiles/.config/zsh/kubectl_aliases.zsh ]; then
+    source ~/dotfiles/.config/zsh/kubectl_aliases.zsh
+else
+  echo "kubectl_aliases file does not exist"
 fi
 
 source ~/.config/zsh/aliases.zsh
 source ~/.config/zsh/git_aliases.zsh
-
-if [ -f ~/.config/zsh/work_aliases ]; then
-    source ~/.config/zsh/work_aliases
-fi
-
-if [ -f ~/.config/zsh/kubectl_aliases ]; then
-    source ~/.config/zsh/kubectl_aliases
-fi
-
 
 
 
