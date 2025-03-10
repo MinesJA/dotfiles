@@ -23,13 +23,16 @@ export PATH=/Users/jonathan.mines/bin:$PATH
 
 export PATH="$PATH:$HOME/.rvm/bin"
 
-export GITHUB_TOKEN={github token}
 export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-11.jdk"
 eval "$(fzf --zsh)"
 
+if [ -f ~/.config/zsh/github_token ]; then
+    source ~/.config/zsh/github_token
+else
+  echo "ERROR: GITHUB_TOKEN env variable not configured"
+fi
+
 source ~/.config/zsh/aliases.zsh
-source ~/.config/zsh/kubectl_aliases.zsh
-source ~/.config/zsh/work_aliases.zsh
 source ~/.config/zsh/git_aliases.zsh
 
 if [ -f ~/.config/zsh/work_aliases ]; then

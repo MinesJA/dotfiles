@@ -3,3 +3,4 @@
 .config/zsh/work_aliases.zsh
 .config/zsh/release_script.zsh
 .config/zsh/kubectl_aliases.zsh
+.config/zsh/github_token.zsh
