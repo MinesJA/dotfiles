@@ -46,4 +46,4 @@ Followed [this guide](https://davidtsadler.com/posts/arch/2020-09-07/installing-
 
 
 ## Todo:
-1. [btop](Add https://github.com/aristocratos/btop)
+1. [Add btop](https://github.com/aristocratos/btop)
