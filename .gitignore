@@ -1,3 +1,10 @@
+.config/fonts/*
 .config/wezterm/extra/ssh.lua
 .config/tmux/plugins
 .config/zsh/work_aliases.zsh
+.config/zsh/secrets.zsh
+.claude/local
+.claude/statsig
+.claude/todos
+.claude/projects
+.claude/.credentials.json
