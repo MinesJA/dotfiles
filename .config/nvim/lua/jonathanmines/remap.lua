@@ -20,6 +20,7 @@ vim.keymap.set("x", "<leader>p", [["_dP]])
 vim.keymap.set({"n", "v"}, "<leader>y", [["+y]])
 vim.keymap.set("n", "<leader>Y", [["+Y]])
 
+
 vim.keymap.set({"n", "v"}, "<leader>d", [["_d]])
 
 -- This is going to get me cancelled
@@ -46,3 +47,63 @@ vim.keymap.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>");
 vim.keymap.set("n", "<leader><leader>", function()
     vim.cmd("so")
 end)
+
+vim.keymap.set("n", "<leader>e", ":w | :!zsh 'rubocop -a'")
+
+-- Copilot
+vim.keymap.set("n", "<leader>cca", ":CopilotChatAgent<CR>", { desc = "Start Copilot Agent" })
+
+-- Open URL under cursor
+vim.keymap.set("n", "gx", function()
+    local url = vim.fn.expand("<cWORD>")
+    -- Try to extract URL from the current line if the word doesn't look like a URL
+    if not url:match("^https?://") then
+        local line = vim.fn.getline(".")
+        -- Match URLs in the current line (improved regex for better URL matching)
+        local matched_url = line:match("https?://[%w-_%.%?%.:/%+=&%#%%~!%$'%(%)%*,;@]+")
+        if matched_url then
+            url = matched_url
+        end
+    end
+    
+    if url:match("^https?://") then
+        vim.fn.jobstart({"open", url}, {detach = true})
+        print("Opening URL: " .. url)
+    else
+        print("No URL found under cursor")
+    end
+end, { desc = "Open URL under cursor" })
+
+-- Search selected text in browser
+vim.keymap.set("v", "gx", function()
+    -- Get the visual selection
+    local start_pos = vim.fn.getpos("'<")
+    local end_pos = vim.fn.getpos("'>")
+    local lines = vim.fn.getline(start_pos[2], end_pos[2])
+    
+    if #lines == 0 then
+        return
+    end
+    
+    -- Handle single line selection
+    if #lines == 1 then
+        lines[1] = string.sub(lines[1], start_pos[3], end_pos[3])
+    else
+        -- Handle multi-line selection
+        lines[1] = string.sub(lines[1], start_pos[3])
+        lines[#lines] = string.sub(lines[#lines], 1, end_pos[3])
+    end
+    
+    local text = table.concat(lines, " ")
+    
+    -- Check if the selection is a URL
+    if text:match("^https?://") then
+        vim.fn.jobstart({"open", text}, {detach = true})
+        print("Opening URL: " .. text)
+    else
+        -- Otherwise, search for the text in the default browser
+        local search_url = "https://www.google.com/search?q=" .. vim.fn.escape(text, " ")
+        vim.fn.jobstart({"open", search_url}, {detach = true})
+        print("Searching for: " .. text)
+    end
+end, { desc = "Open URL or search selected text" })

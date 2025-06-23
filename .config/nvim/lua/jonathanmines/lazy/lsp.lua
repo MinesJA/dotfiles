@@ -37,6 +37,7 @@ return {
         require("mason-lspconfig").setup({
             ensure_installed = {
                 "lua_ls",
+                "rust_analyzer",
             },
             handlers = {
                 function(server_name) -- default handler (optional)
@@ -58,6 +59,61 @@ return {
                 --  }
                 --end,
 
+                ["ruby_lsp"] = function()
+                  local lspconfig = require("lspconfig")
+                  lspconfig.ruby_lsp.setup {
+                    cmd = { "ruby-lsp" },
+
+                    --cmd = function()
+                    --  -- Try to use the version specified in the project
+                    --  local rvm_ruby_version = vim.fn.system("cd " .. vim.fn.getcwd() .. " && rvm current"):gsub("%s+$", "")
+                    --  return {
+                    --    "rvm", rvm_ruby_version, "do", "ruby-lsp"
+                    --  }
+                    --end,
+                    capabilities = capabilities
+                  }
+                end,
+
+                ["pyright"] = function()
+                  local lspconfig = require("lspconfig")
+                  lspconfig.pyright.setup {
+                    settings = {
+                      python = {
+                        pythonPath = "/Users/jonathan.mines/firstup/taskmaster/py-311-venv/bin/python",
+                        analysis = {
+                          autoSearchPaths = true,
+                          diagnosticMode = "workspace",
+                          useLibraryCodeForTypes = true,
+                        },
+                      },
+                    },
+                  }
+                end,
+
+                ["rust_analyzer"] = function()
+                    local lspconfig = require("lspconfig")
+                    local util = require("lspconfig.util")
+                    lspconfig.rust_analyzer.setup {
+                        capabilities = capabilities,
+                        -- Explicitly set root directory detection
+                        root_dir = util.root_pattern("Cargo.toml", "rust-project.json"),
+                        -- Ensure it starts with the Mason-installed binary
+                        cmd = { vim.fn.expand("~/.local/share/nvim/mason/bin/rust-analyzer") },
+                        filetypes = { "rust" },
+                        settings = {
+                            ["rust-analyzer"] = {
+                                cargo = {
+                                    allFeatures = true,
+                                },
+                                checkOnSave = {
+                                    command = "clippy",
+                                },
+                            },
+                        },
+                    }
+                end,
+
                 ["lua_ls"] = function()
                     local lspconfig = require("lspconfig")
                     lspconfig.lua_ls.setup {
@@ -71,47 +127,6 @@ return {
                             }
                         }
                     }
-
-                    lspconfig.solargraph.setup {
-                        cmd = {
-                            "rvm",
-                            "@global",
-                            "do",
-                            "solargraph",
-                            "stdio"
-                        },
-                        filetypes = {
-                            "ruby"
-                        },
-                        flags = {
-                            debounce_text_changes = 150
-                        },
-                        --on_attach = on_attach,
-                        root_dir = lspconfig.util.root_pattern("Gemfile", ".git", "."),
-                        capabilities = capabilities,
-                        handlers = handlers,
-                        settings = {
-                            solargraph = {
-                                completion = true,
-                                autoformat = false,
-                                formatting = true,
-                                symbols = true,
-                                definitions = true,
-                                references = true,
-                                folding = true,
-                                highlights = true,
-                                diagnostics = true,
-                                rename = true,
-                                -- Enable this when running with docker compose
-                                --transport = 'external',
-                                --externalServer = {
-                                --    host = 'localhost',
-                                --    port = '7658',
-                                --}
-                            }
-                        }
-                    }
-
                 end,
             }
         })
