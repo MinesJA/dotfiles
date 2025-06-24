@@ -8,6 +8,7 @@
 .config/zsh/github_mcp_token.zsh
 .config/zsh/openai_token.zsh
 .config/zsh/secrets.zsh
+.config/zsh/tokens.zsh
 
 # GitHub Copilot - contains OAuth tokens
 .config/github-copilot/
