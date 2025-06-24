@@ -168,6 +168,66 @@ install_additional_tools() {
     print_success "Additional tools installed"
 }
 
+# Install Claude CLI
+install_claude() {
+    print_info "Installing Claude CLI..."
+    
+    if ! command -v claude &> /dev/null; then
+        case $OS in
+            macos)
+                if command -v brew &> /dev/null; then
+                    print_info "Installing Claude CLI via Homebrew..."
+                    brew install claude
+                else
+                    print_info "Installing Claude CLI via curl..."
+                    curl -fsSL https://claude.ai/install.sh | sh
+                fi
+                ;;
+            *)
+                print_info "Installing Claude CLI via curl..."
+                curl -fsSL https://claude.ai/install.sh | sh
+                ;;
+        esac
+        print_success "Claude CLI installed"
+    else
+        print_info "Claude CLI already installed"
+    fi
+}
+
+# Setup MCP for Claude
+setup_mcp() {
+    print_info "Setting up MCP for Claude..."
+    
+    # Ensure Docker is available for GitHub MCP
+    if ! command -v docker &> /dev/null; then
+        print_warning "Docker not found. GitHub MCP requires Docker to run."
+        print_info "Please install Docker manually and run the following command to add GitHub MCP:"
+        echo "claude mcp add github -s user -e GITHUB_PERSONAL_ACCESS_TOKEN=\$GITHUB_MCP_TOKEN -- docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN \"ghcr.io/github/github-mcp-server\""
+        return
+    fi
+    
+    # Check if GitHub MCP token is available
+    if [[ -f ".config/zsh/github_mcp_token.zsh" ]] && grep -q "export GITHUB_MCP_TOKEN=" .config/zsh/github_mcp_token.zsh; then
+        print_info "GitHub MCP token found, setting up GitHub MCP..."
+        source .config/zsh/github_mcp_token.zsh
+        
+        if [[ -n "$GITHUB_MCP_TOKEN" ]]; then
+            print_info "Adding GitHub MCP server..."
+            claude mcp add github -s user -e GITHUB_PERSONAL_ACCESS_TOKEN="$GITHUB_MCP_TOKEN" -- docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN "ghcr.io/github/github-mcp-server"
+            print_success "GitHub MCP server added"
+        else
+            print_warning "GITHUB_MCP_TOKEN not set in token file"
+        fi
+    else
+        print_warning "GitHub MCP token not configured. Please:"
+        echo "1. Copy .config/zsh/github_mcp_token.zsh.example to .config/zsh/github_mcp_token.zsh"
+        echo "2. Add your GitHub personal access token"
+        echo "3. Run: claude mcp add github -s user -e GITHUB_PERSONAL_ACCESS_TOKEN=\$GITHUB_MCP_TOKEN -- docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN \"ghcr.io/github/github-mcp-server\""
+    fi
+    
+    print_success "MCP setup completed"
+}
+
 # Create template files for secrets
 create_template_files() {
     print_info "Creating template files for secrets..."
@@ -315,8 +375,10 @@ main() {
     detect_os
     install_dependencies
     install_additional_tools
+    install_claude
     create_template_files
     setup_stow
+    setup_mcp
     set_default_shell
     
     print_success "Setup complete!"
@@ -325,10 +387,12 @@ main() {
     echo
     print_info "Post-installation steps:"
     echo "1. Copy and edit the template files in .config/zsh/*.example"
-    echo "2. Open a new terminal and run: p10k configure"
-    echo "3. Open tmux and press Ctrl-a + I to install plugins"
-    echo "4. Open Neovim and let plugins install automatically"
-    echo "5. Configure git with your name and email:"
+    echo "2. Configure Claude CLI by running: claude auth login"
+    echo "3. For GitHub MCP, ensure your GitHub token is set in .config/zsh/github_mcp_token.zsh"
+    echo "4. Open a new terminal and run: p10k configure"
+    echo "5. Open tmux and press Ctrl-a + I to install plugins"
+    echo "6. Open Neovim and let plugins install automatically"
+    echo "7. Configure git with your name and email:"
     echo "   git config --global user.name \"Your Name\""
     echo "   git config --global user.email \"your.email@example.com\""
     echo
