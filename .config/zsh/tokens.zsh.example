@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+# tokens.zsh.example
+# Copy this file to tokens.zsh and fill in your actual values
+# DO NOT commit tokens.zsh to version control!
+
+# OpenAI API Token
+# export OPENAI_API_KEY="your-openai-api-key-here"
+
+# GitHub Personal Access Token
+# export GITHUB_TOKEN="your-github-token-here"
+
+# GitHub MCP Token
+# export GITHUB_MCP_TOKEN="your-github-mcp-token-here"
+
+# GitHub Personal Access Token (alternative name)
+# export GITHUB_PERSONAL_ACCESS_TOKEN="your-github-personal-access-token"
+
+# Bundle GitHub token for gems
+# export BUNDLE_GITHUB__COM="your-github-token:x-oauth-basic"
+
+# Add other sensitive environment variables here
+# export API_KEY="your-api-key"
+# export SECRET_TOKEN="your-secret-token"

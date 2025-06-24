@@ -10,8 +10,8 @@ This repository implements a secure approach to managing environment variables a
 ### File Structure
 ```
 .config/zsh/
-├── secrets.zsh           # Private secrets (gitignored)
-├── secrets.zsh.example   # Template file (public)
+├── tokens.zsh           # Private tokens/secrets (gitignored)
+├── tokens.zsh.example   # Template file (public)
 ├── aliases.zsh          # Public aliases
 └── git_aliases.zsh      # Public git aliases
 ```
@@ -20,13 +20,13 @@ This repository implements a secure approach to managing environment variables a
 
 1. **Copy the template file:**
    ```bash
-   cp .config/zsh/secrets.zsh.example .config/zsh/secrets.zsh
+   cp .config/zsh/tokens.zsh.example .config/zsh/tokens.zsh
    ```
 
-2. **Edit secrets.zsh with your actual values:**
+2. **Edit tokens.zsh with your actual values:**
    ```bash
    # Edit the file and replace placeholders with real tokens
-   vim .config/zsh/secrets.zsh
+   vim .config/zsh/tokens.zsh
    ```
 
 3. **Install git hooks for protection:**
@@ -37,12 +37,12 @@ This repository implements a secure approach to managing environment variables a
 ## Security Features
 
 ### Git Protection
-- **Gitignore**: `secrets.zsh` is automatically excluded from version control
+- **Gitignore**: `tokens.zsh` is automatically excluded from version control
 - **Pre-commit hooks**: Detect and prevent accidental secret commits
 - **Template files**: Provide examples without exposing real values
 
 ### Automatic Loading
-- Secrets are automatically sourced by `.zshrc` when the shell starts
+- Tokens are automatically sourced by `.zshrc` when the shell starts
 - Conditional loading prevents errors if the file doesn't exist
 
 ## Protected Secret Types
@@ -52,7 +52,7 @@ The pre-commit hooks detect and block:
 - **Private keys**: RSA, DSA, EC, OpenSSH private keys
 - **AWS access keys**: `AKIA*` patterns
 - **OpenAI API keys**: `sk-*` patterns
-- **Forbidden files**: `secrets.zsh`, `.env`, `.envrc`
+- **Forbidden files**: `tokens.zsh`, `secrets.zsh`, `.env`, `.envrc`
 
 ## Best Practices
 
@@ -61,6 +61,7 @@ The pre-commit hooks detect and block:
 2. **Use minimal scopes** - only grant necessary permissions
 3. **Rotate regularly** - set calendar reminders for token rotation
 4. **Monitor usage** - check token usage in provider dashboards
+5. **Avoid .gitconfig tokens** - use environment variables instead of git config
 
 ### Password Manager Integration
 For enhanced security, consider using password manager CLIs:
@@ -80,11 +81,11 @@ export GITHUB_TOKEN=$(bw get password github-token)
 Create environment-specific secret files:
 
 ```bash
-# In .zshrc or secrets.zsh
+# In .zshrc or tokens.zsh
 if [[ $(hostname) == "work-laptop" ]]; then
-    source ~/.config/zsh/work-secrets.zsh
+    source ~/.config/zsh/work-tokens.zsh
 elif [[ $(hostname) == "personal-machine" ]]; then
-    source ~/.config/zsh/personal-secrets.zsh
+    source ~/.config/zsh/personal-tokens.zsh
 fi
 ```
 
@@ -98,7 +99,7 @@ fi
    ```bash
    # Use BFG Repo-Cleaner or git filter-branch
    git filter-branch --force --index-filter \
-     'git rm --cached --ignore-unmatch .config/zsh/secrets.zsh' \
+     'git rm --cached --ignore-unmatch .config/zsh/tokens.zsh' \
      --prune-empty --tag-name-filter cat -- --all
    ```
 
@@ -108,7 +109,7 @@ If you accidentally commit secrets:
 2. **Reset the commit**: `git reset HEAD~1`
 3. **Revoke the exposed tokens**
 4. **Create new tokens**
-5. **Update your secrets.zsh file**
+5. **Update your tokens.zsh file**
 
 ## Advanced Security
 
@@ -133,12 +134,12 @@ fi
 ## Verification
 
 ### Test Your Setup
-1. **Check gitignore**: `git check-ignore .config/zsh/secrets.zsh` should return the filename
+1. **Check gitignore**: `git check-ignore .config/zsh/tokens.zsh` should return the filename
 2. **Test pre-commit**: Try committing a fake token to verify the hook works
 3. **Verify loading**: `echo $GITHUB_TOKEN` should show your token after shell restart
 
 ### Regular Audits
-- Review your secrets.zsh file quarterly
+- Review your tokens.zsh file quarterly
 - Check for unused tokens and remove them
 - Verify token permissions are still minimal
 - Update token expiration dates

@@ -43,34 +43,16 @@ eval "$(fzf --zsh)"
 
 # Load secret files for macOS
 if [[ $(uname) == "Darwin" ]]; then
-  if [ -e ~/dotfiles/.config/zsh/openai_token.zsh ]; then
-    source ~/dotfiles/.config/zsh/openai_token.zsh
-  else
-    echo "openai_token file does not exist"
-  fi
-
-  if [ -e ~/dotfiles/.config/zsh/github_token.zsh ]; then
-    source ~/dotfiles/.config/zsh/github_token.zsh
-  else
-    echo "github_token file does not exist"
-  fi
-
-  if [ -e ~/dotfiles/.config/zsh/github_mcp_token.zsh ]; then
-    source ~/dotfiles/.config/zsh/github_mcp_token.zsh
-  else
-    echo "github_mcp_token file does not exist"
+  if [ -e ~/dotfiles/.config/zsh/tokens.zsh ]; then
+    source ~/dotfiles/.config/zsh/tokens.zsh
   fi
 
   if [ -e ~/dotfiles/.config/zsh/work_aliases.zsh ]; then
       source ~/dotfiles/.config/zsh/work_aliases.zsh
-  else
-    echo "work_aliases file does not exist"
   fi
 
   if [ -e ~/dotfiles/.config/zsh/kubectl_aliases.zsh ]; then
       source ~/dotfiles/.config/zsh/kubectl_aliases.zsh
-  else
-    echo "kubectl_aliases file does not exist"
   fi
 fi
 
@@ -94,28 +76,32 @@ if [[ $(uname) == "Linux" ]]; then
   fi
 fi
 
+alias claude=/usr/local/bin/claude
+
 # Ruby project setup function (macOS)
 if [[ $(uname) == "Darwin" ]]; then
   setup_ruby_project() {
       local ruby_version=$(cat .ruby-version 2>/dev/null)
-      
+
       if [ -z "$ruby_version" ]; then
           echo "No .ruby-version file found"
           return 1
       fi
-      
+
       echo "Installing Ruby $ruby_version..."
       rbenv install "$ruby_version" --skip-existing
-      
+
       echo "Setting local Ruby version..."
       rbenv local "$ruby_version"
-      
+
       echo "Installing ruby-lsp..."
       gem install ruby-lsp
-      
+
       echo "Rehashing rbenv..."
       rbenv rehash
-      
+
       echo "✅ Setup complete! Ruby $ruby_version with ruby-lsp is ready."
   }
 fi
+
+#[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

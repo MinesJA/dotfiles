@@ -8,7 +8,7 @@ My personal dotfiles for macOS and Linux, managed with [GNU Stow](https://www.gn
 - **Tmux** - Terminal multiplexer configuration with custom keybindings
 - **Zsh** - Shell configuration with Powerlevel10k theme
 - **WezTerm** - GPU-accelerated terminal emulator configuration
-- **Git** - Global git configuration
+- **Git** - Global git configuration (symlinked from dotfiles)
 - **Scripts** - Various utility scripts
 
 ## Prerequisites
@@ -106,10 +106,7 @@ The setup script will:
 6. **Create Secret Files**
    ```bash
    # Copy templates and fill in your values
-   cp .config/zsh/openai_token.zsh.example .config/zsh/openai_token.zsh
-   cp .config/zsh/github_token.zsh.example .config/zsh/github_token.zsh
-   cp .config/zsh/work_aliases.zsh.example .config/zsh/work_aliases.zsh
-   cp .config/zsh/kubectl_aliases.zsh.example .config/zsh/kubectl_aliases.zsh
+   cp .config/zsh/tokens.zsh.example .config/zsh/tokens.zsh
    cp .config/wezterm/ssh.lua.example .config/wezterm/ssh.lua
    ```
 
@@ -160,7 +157,7 @@ The setup script will:
 ### Zsh
 - Theme: Powerlevel10k
 - Custom aliases in `.config/zsh/aliases.zsh`
-- Secret tokens in separate files (not tracked by git)
+- Secret tokens consolidated in `tokens.zsh` (not tracked by git)
 
 ### WezTerm
 - GPU-accelerated terminal
@@ -189,7 +186,12 @@ The setup script will:
    ```
 
 5. **Configure Git**
+   The `.gitconfig` file is automatically symlinked from dotfiles. Update the user information:
    ```bash
+   # Edit the dotfiles .gitconfig directly
+   vim ~/dotfiles/.gitconfig
+   
+   # Or use git config commands (which will modify the symlinked file)
    git config --global user.name "Your Name"
    git config --global user.email "your.email@example.com"
    ```

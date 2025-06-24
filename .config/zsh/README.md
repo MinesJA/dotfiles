@@ -8,17 +8,17 @@ This directory contains ZSH configuration files for aliases, functions, and envi
 - `git_aliases.zsh` - Git-specific aliases (public, tracked in git)
 - `kubectl_aliases.zsh` - Kubernetes kubectl aliases (public, tracked in git)
 - `work_aliases.zsh` - Work-specific aliases (private, gitignored)
-- `secrets.zsh` - Sensitive environment variables like API tokens (private, gitignored)
-- `secrets.zsh.example` - Template for secrets.zsh file
+- `tokens.zsh` - Sensitive environment variables like API tokens (private, gitignored)
+- `tokens.zsh.example` - Template for tokens.zsh file
 
 ## Setting up secrets
 
 1. Copy the example file:
    ```bash
-   cp secrets.zsh.example secrets.zsh
+   cp tokens.zsh.example tokens.zsh
    ```
 
-2. Edit `secrets.zsh` and add your actual tokens/secrets
+2. Edit `tokens.zsh` and add your actual tokens/secrets
 
 3. The file is automatically gitignored and will be sourced by `.zshrc`
 
@@ -30,7 +30,7 @@ This directory contains ZSH configuration files for aliases, functions, and envi
 
 ## Security Best Practices
 
-- Never commit `secrets.zsh` or `work_aliases.zsh` to version control
+- Never commit `tokens.zsh` or `work_aliases.zsh` to version control
 - Regularly rotate your API tokens and credentials
 - Use token expiration dates when creating new tokens
 - Use minimal permission scopes for API tokens
@@ -63,4 +63,4 @@ This will prevent accidental commits of:
 - Private keys
 - AWS access keys
 - OpenAI API keys
-- Forbidden files (secrets.zsh, .env, .envrc)
+- Forbidden files (tokens.zsh, secrets.zsh, .env, .envrc)
