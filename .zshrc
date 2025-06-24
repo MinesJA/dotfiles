@@ -6,14 +6,21 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 if [[ $(uname) == "Darwin" ]]; then
-  source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
+  # Set Homebrew prefix based on architecture
+  if [[ $(uname -m) == "arm64" ]]; then
+    export HOMEBREW_PREFIX="/opt/homebrew"
+  else
+    export HOMEBREW_PREFIX="/usr/local"
+  fi
+
+  source $HOMEBREW_PREFIX/share/powerlevel10k/powerlevel10k.zsh-theme
 
   export NVM_DIR="$HOME/.nvm"
-    [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-    [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+  [ -s "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" ] && \. "$HOMEBREW_PREFIX/opt/nvm/nvm.sh"
+  [ -s "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm" ] && \. "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm"
 
   export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk-23.jdk/Contents/Home"
-  export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+  export PATH="$HOMEBREW_PREFIX/opt/libpq/bin:$PATH"
   export PATH="$PATH:$JAVA_HOME/bin"
   export PATH="$PATH:$HOME/go/bin"
   export PATH="/usr/local/bin:$PATH"
