@@ -13,6 +13,7 @@
   "git-blame.nvim": { "branch": "master", "commit": "fb84fad97cd4b51caee3c865e8a33a0d413b77a8" },
   "golf": { "branch": "main", "commit": "89f6ca2a4f3db62057ae45aea7ff5730f0f32e83" },
   "harpoon": { "branch": "master", "commit": "ccae1b9bec717ae284906b0bf83d720e59d12b91" },
+  "hererocks": { "branch": "master", "commit": "8bd2fcfdd65cfa7535ce39ea372a63b0bdb8e528" },
   "jq-playground.nvim": { "branch": "main", "commit": "40256cb9750fe36057850ef3e20f784934b5a6a4" },
   "lazy.nvim": { "branch": "main", "commit": "8f19915175395680808de529e4220da8dafc0759" },
   "lsp_signature.nvim": { "branch": "master", "commit": "a38da0a61c172bb59e34befc12efe48359884793" },

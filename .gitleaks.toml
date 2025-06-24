@@ -1,0 +1,102 @@
+# Gitleaks configuration for dotfiles repository
+# Run with: gitleaks detect --config .gitleaks.toml
+
+title = "Dotfiles Secret Detection"
+
+[[rules]]
+id = "github-pat"
+description = "GitHub Personal Access Token"
+regex = '''ghp_[0-9a-zA-Z]{36}'''
+keywords = [
+    "ghp_",
+]
+
+[[rules]]
+id = "github-fine-grained-pat"
+description = "GitHub Fine-Grained Personal Access Token"
+regex = '''github_pat_[0-9a-zA-Z_]{82}'''
+keywords = [
+    "github_pat_",
+]
+
+[[rules]]
+id = "github-app-token"
+description = "GitHub App Token"
+regex = '''(ghu|ghs)_[0-9a-zA-Z]{36}'''
+keywords = [
+    "ghu_",
+    "ghs_",
+]
+
+[[rules]]
+id = "aws-access-key"
+description = "AWS Access Key"
+regex = '''AKIA[0-9A-Z]{16}'''
+keywords = [
+    "AKIA",
+]
+
+[[rules]]
+id = "aws-secret-key"
+description = "AWS Secret Key"
+regex = '''[0-9a-zA-Z/+]{40}'''
+keywords = [
+    "aws_secret_access_key",
+    "aws-secret-access-key",
+]
+
+[[rules]]
+id = "openai-api-key"
+description = "OpenAI API Key"
+regex = '''sk-[a-zA-Z0-9]{48}'''
+keywords = [
+    "sk-",
+]
+
+[[rules]]
+id = "private-key"
+description = "Private Key"
+regex = '''-----BEGIN (RSA |DSA |EC |OPENSSH )?PRIVATE KEY-----'''
+keywords = [
+    "BEGIN PRIVATE KEY",
+    "BEGIN RSA PRIVATE KEY",
+    "BEGIN DSA PRIVATE KEY",
+    "BEGIN EC PRIVATE KEY",
+    "BEGIN OPENSSH PRIVATE KEY",
+]
+
+[[rules]]
+id = "generic-api-key"
+description = "Generic API Key"
+regex = '''(?i)(api[_-]?key|apikey|secret[_-]?key|secretkey|access[_-]?token|accesstoken)["\']?\s*[:=]\s*["\']?[0-9a-zA-Z\-_]{16,}'''
+keywords = [
+    "api_key",
+    "apikey",
+    "secret_key", 
+    "secretkey",
+    "access_token",
+    "accesstoken",
+]
+
+# Allowlist specific files and patterns
+[allowlist]
+description = "Allowlist for false positives"
+files = [
+    '''secrets\.zsh\.example''',  # Template files are OK
+    '''\.gitleaks\.toml''',       # This config file
+    '''SECURITY\.md''',           # Documentation
+    '''README\.md''',             # Documentation
+]
+
+paths = [
+    '''(.*?)(jpg|gif|doc|pdf|bin)$''',  # Binary files
+]
+
+regexes = [
+    '''example[_-]?(token|key|secret)''',     # Example tokens
+    '''your[_-]?(token|key|secret)''',        # Placeholder tokens
+    '''fake[_-]?(token|key|secret)''',        # Fake tokens
+    '''test[_-]?(token|key|secret)''',        # Test tokens
+    '''dummy[_-]?(token|key|secret)''',       # Dummy tokens
+    '''placeholder[_-]?(token|key|secret)''', # Placeholder tokens
+]

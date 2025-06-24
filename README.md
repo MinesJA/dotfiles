@@ -228,6 +228,24 @@ If commands are not found after installation:
 - Run `:checkhealth` in Neovim to diagnose issues
 - Ensure you have the latest version of Neovim (>= 0.9)
 
+## Video Tutorials
+
+### Tmux
+[Video Tutorial](https://www.youtube.com/watch?v=DzNmUNvnB04&ab_channel=DreamsofCode)
+
+Using TPM - Tmux Plugin Manager
+[Git Repo](https://github.com/tmux-plugins/tpm)
+
+Need to clone it before being able to install plugins (see readme).
+
+Then `prefix + I` to install in a Tmux session
+
+### P10K (Arch Linux)
+Followed [this guide](https://davidtsadler.com/posts/arch/2020-09-07/installing-zsh-and-powerlevel10k-on-arch-linux/)
+
+## How to ignore files with Stow
+See: `.stow-local-ignore`
+
 ## License
 
 Feel free to use and modify these dotfiles as you see fit.

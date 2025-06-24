@@ -1,12 +1,19 @@
 local wezterm = require('wezterm')
-local ssh_domains = require('extra.ssh') 
+local ssh_domains = require('extra.ssh')
 local mux = wezterm.mux
 local act = wezterm.action
 
 local config = {}
--- TODO: 
+-- TODO:
 -- 1. Add nvim like keybindings for navigating windows and tabs (h,j,k,l)
-local keys = {}
+local keys = {
+  {
+    key = 'f',
+    mods = 'SUPER',
+    action = wezterm.action.DisableDefaultAssignment
+  }
+
+}
 local mouse_bindings = {}
 local launch_menu = {}
 
