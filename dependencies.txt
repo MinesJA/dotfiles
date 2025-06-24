@@ -1,0 +1,69 @@
+# Dotfiles Dependencies
+
+## Core Requirements
+- GNU Stow - Symlink farm manager
+- Git - Version control
+- Zsh - Z shell
+- Neovim >= 0.9 - Text editor
+- Tmux - Terminal multiplexer
+
+## Shell & Terminal
+- Powerlevel10k - Zsh theme
+- WezTerm - GPU-accelerated terminal emulator (optional but recommended)
+- Nerd Fonts (FiraCode, JetBrains Mono, or Hack)
+
+## Command Line Tools
+- ripgrep (rg) - Fast grep alternative
+- fd - Fast find alternative
+- bat - Cat with syntax highlighting
+- fzf - Fuzzy finder
+- eza - Modern ls replacement
+- zoxide - Smarter cd command
+- jq - JSON processor
+- tree - Directory tree viewer
+
+## Development Tools
+- asdf - Version manager for multiple languages
+- Python 3 with pip
+- Node.js and npm
+- Go
+- Rust (required for some Neovim plugins)
+- cmake - Build tool
+- make - Build tool
+
+## Git Tools
+- gh - GitHub CLI
+- git-delta - Better git diffs
+- lazygit - Terminal UI for git (optional)
+
+## Language Servers (install via :Mason in Neovim)
+- lua-language-server
+- typescript-language-server
+- pyright or pylsp
+- gopls
+- rust-analyzer
+
+## Tmux Plugins (managed by TPM)
+- tmux-sensible
+- tmux-yank
+- tmux-resurrect
+- tmux-continuum
+
+## Additional Tools (optional)
+- direnv - Directory-specific environment variables
+- starship - Cross-shell prompt (alternative to p10k)
+- tldr - Simplified man pages
+- htop - Process viewer
+- ncdu - Disk usage analyzer
+
+## Platform-specific Notes
+
+### macOS
+- Install Xcode Command Line Tools: `xcode-select --install`
+- Use Homebrew for package management
+- Some GNU tools may need to be installed with `g` prefix
+
+### Linux
+- Package names may vary by distribution
+- Debian/Ubuntu: fd is called fd-find
+- Some tools may need manual installation or PPAs

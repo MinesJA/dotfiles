@@ -1,0 +1,6 @@
+# Work-specific aliases
+# Add your work-related aliases here
+# alias work-vpn='sudo openvpn /path/to/config.ovpn'
+# alias work-ssh='ssh user@work-server.com'
+# alias work-db='mysql -h work-db.example.com -u myuser -p'
+# alias work-deploy='ssh deploy@prod-server.com'

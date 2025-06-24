@@ -1,4 +1,5 @@
-alias gs=git status
+alias gp='git pull'
+alias gs='git status'
 
 worktree(){
   project_name=${PWD##*/}
@@ -8,5 +9,3 @@ worktree(){
 
   cd ../$worktree_name
 }
-
-

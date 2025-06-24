@@ -45,6 +45,31 @@ autocmd("BufWritePre", {
   end,
 })
 
+-- Ensure rust-analyzer starts for Rust files
+autocmd('FileType', {
+    group = JonathanMinesGroup,
+    pattern = 'rust',
+    callback = function()
+        -- Small delay to ensure buffer is fully loaded
+        vim.defer_fn(function()
+            -- Check if rust-analyzer is attached
+            local clients = vim.lsp.get_active_clients({ bufnr = 0 })
+            local has_rust_analyzer = false
+            for _, client in ipairs(clients) do
+                if client.name == "rust_analyzer" then
+                    has_rust_analyzer = true
+                    break
+                end
+            end
+            
+            -- If not attached, try to start it
+            if not has_rust_analyzer then
+                vim.cmd('LspStart rust_analyzer')
+            end
+        end, 100)
+    end
+})
+
 autocmd('LspAttach', {
     group = JonathanMinesGroup,
     callback = function(e)
@@ -65,3 +90,21 @@ autocmd('LspAttach', {
 vim.g.netrw_browse_split = 0
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
+
+-- Command to manually restart rust-analyzer
+vim.api.nvim_create_user_command('RustAnalyzerRestart', function()
+    -- Stop all rust-analyzer clients
+    local clients = vim.lsp.get_active_clients()
+    for _, client in ipairs(clients) do
+        if client.name == "rust_analyzer" then
+            vim.lsp.stop_client(client.id)
+        end
+    end
+    
+    -- Restart for current buffer if it's a Rust file
+    if vim.bo.filetype == "rust" then
+        vim.defer_fn(function()
+            vim.cmd('edit')  -- Reload the buffer to trigger FileType autocmd
+        end, 100)
+    end
+end, {})

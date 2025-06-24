@@ -1,0 +1,21 @@
+-- SSH connection configurations for WezTerm
+-- Example configuration:
+return {
+  -- {
+  --   name = "My Server",
+  --   host = "example.com",
+  --   user = "myuser",
+  --   port = 22,
+  -- },
+  -- {
+  --   name = "Development Box",
+  --   host = "dev.company.com", 
+  --   user = "developer",
+  --   port = 2222,
+  -- },
+  -- {
+  --   name = "Production Server",
+  --   host = "192.168.1.100",
+  --   user = "admin",
+  -- },
+}

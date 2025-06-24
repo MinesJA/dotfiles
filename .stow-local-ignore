@@ -1,0 +1,53 @@
+# Stow ignore file
+# Files and patterns listed here will not be symlinked
+
+# Git files
+\.git
+\.gitignore
+\.gitmodules
+
+# Documentation
+README\.md
+LICENSE
+CHANGELOG\.md
+
+# Setup files
+setup\.sh
+Brewfile
+dependencies\.txt
+
+# macOS files
+\.DS_Store
+
+# Editor files
+\*~
+\.\#\*
+\#\*\#
+\.swp
+\.swo
+
+# Backup files
+\*\.bak
+\*\.backup
+\*\.orig
+
+# Example/template files
+\*\.example
+
+# GitHub Copilot (contains sensitive tokens)
+\.config/github-copilot/apps\.json
+
+# Tmux plugins (managed by TPM)
+\.tmux/plugins/
+
+# Python
+__pycache__
+\*\.pyc
+\.python-version
+
+# Node
+node_modules
+\.npm
+
+# Other
+\.stow-local-ignore

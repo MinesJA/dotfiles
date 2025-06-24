@@ -1,0 +1,38 @@
+-- SSH Domain Configuration for WezTerm
+-- 
+-- To use:
+-- 1. Copy this file: cp ssh.lua.example ssh.lua
+-- 2. Add your SSH domain configurations
+-- 3. The file is already in .gitignore for security
+--
+-- Documentation: https://wezfurlong.org/wezterm/config/lua/SshDomain.html
+
+return {
+    -- Example SSH domain configurations:
+    
+    -- Simple configuration
+    -- {
+    --     name = "my-server",
+    --     remote_address = "192.168.1.100",
+    --     username = "myuser",
+    -- },
+    
+    -- With custom SSH port
+    -- {
+    --     name = "dev-server",
+    --     remote_address = "dev.example.com:2222",
+    --     username = "developer",
+    -- },
+    
+    -- With SSH options
+    -- {
+    --     name = "production",
+    --     remote_address = "prod.example.com",
+    --     username = "admin",
+    --     ssh_option = {
+    --         identityfile = "~/.ssh/production_key",
+    --     },
+    -- },
+    
+    -- Add your SSH domains below:
+}

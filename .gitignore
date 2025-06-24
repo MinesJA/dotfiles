@@ -2,7 +2,17 @@
 .config/wezterm/extra/ssh.lua
 .config/tmux/plugins
 .config/zsh/work_aliases.zsh
+.config/zsh/release_script.zsh
+.config/zsh/kubectl_aliases.zsh
+.config/zsh/github_token.zsh
+.config/zsh/github_mcp_token.zsh
+.config/zsh/openai_token.zsh
 .config/zsh/secrets.zsh
+
+# GitHub Copilot - contains OAuth tokens
+.config/github-copilot/
+
+# Claude CLI
 .claude/local
 .claude/statsig
 .claude/todos

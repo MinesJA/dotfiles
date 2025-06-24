@@ -37,6 +37,7 @@ return {
         require("mason-lspconfig").setup({
             ensure_installed = {
                 "lua_ls",
+                "rust_analyzer",
                 "pyright",  -- Add Python LSP
             },
             handlers = {
@@ -58,6 +59,54 @@ return {
                 --    }
                 --  }
                 --end,
+
+                ["ruby_lsp"] = function()
+                  local lspconfig = require("lspconfig")
+                  lspconfig.ruby_lsp.setup {
+                    -- Use rbenv shim for ruby-lsp
+                    cmd = { os.getenv("HOME") .. "/.rbenv/shims/ruby-lsp" },
+                    capabilities = capabilities
+                  }
+                end,
+
+                ["pyright"] = function()
+                  local lspconfig = require("lspconfig")
+                  lspconfig.pyright.setup {
+                    settings = {
+                      python = {
+                        pythonPath = "/Users/jonathan.mines/firstup/taskmaster/py-311-venv/bin/python",
+                        analysis = {
+                          autoSearchPaths = true,
+                          diagnosticMode = "workspace",
+                          useLibraryCodeForTypes = true,
+                        },
+                      },
+                    },
+                  }
+                end,
+
+                ["rust_analyzer"] = function()
+                    local lspconfig = require("lspconfig")
+                    local util = require("lspconfig.util")
+                    lspconfig.rust_analyzer.setup {
+                        capabilities = capabilities,
+                        -- Explicitly set root directory detection
+                        root_dir = util.root_pattern("Cargo.toml", "rust-project.json"),
+                        -- Ensure it starts with the Mason-installed binary
+                        cmd = { vim.fn.expand("~/.local/share/nvim/mason/bin/rust-analyzer") },
+                        filetypes = { "rust" },
+                        settings = {
+                            ["rust-analyzer"] = {
+                                cargo = {
+                                    allFeatures = true,
+                                },
+                                checkOnSave = {
+                                    command = "clippy",
+                                },
+                            },
+                        },
+                    }
+                end,
 
                 ["lua_ls"] = function()
                     local lspconfig = require("lspconfig")
