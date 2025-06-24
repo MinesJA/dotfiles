@@ -50,6 +50,9 @@ export PATH="$HOME/bin:$PATH"
 
 eval "$(fzf --zsh)"
 
+# Initialize rbenv
+eval "$(rbenv init -)"
+
 if [ -e ~/dotfiles/.config/zsh/openai_token.zsh ]; then
   source ~/dotfiles/.config/zsh/openai_token.zsh
 else
@@ -82,6 +85,30 @@ fi
 
 source ~/.config/zsh/aliases.zsh
 source ~/.config/zsh/git_aliases.zsh
+
+# Ruby project setup function
+setup_ruby_project() {
+    local ruby_version=$(cat .ruby-version 2>/dev/null)
+    
+    if [ -z "$ruby_version" ]; then
+        echo "No .ruby-version file found"
+        return 1
+    fi
+    
+    echo "Installing Ruby $ruby_version..."
+    rbenv install "$ruby_version" --skip-existing
+    
+    echo "Setting local Ruby version..."
+    rbenv local "$ruby_version"
+    
+    echo "Installing ruby-lsp..."
+    gem install ruby-lsp
+    
+    echo "Rehashing rbenv..."
+    rbenv rehash
+    
+    echo "✅ Setup complete! Ruby $ruby_version with ruby-lsp is ready."
+}
 
 
 

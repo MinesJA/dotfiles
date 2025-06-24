@@ -1,0 +1,102 @@
+# Dotfiles TODO
+
+## Docker-based Development Environment
+
+**Goal**: Set up development in Docker containers to avoid installing packages/gems locally while maintaining LSP support in nvim.
+
+### Background
+- Currently developing in repos under the `firstup` directory
+- Using nvim as primary IDE with LSP support
+- Want to avoid local installation of Ruby gems and Node packages
+- Need LSP servers to work properly inside containers
+
+### Implementation Plan
+
+#### 1. Create Dev Container Configuration
+- [ ] Add `.devcontainer` directory to dotfiles with reusable Docker configurations
+- [ ] Create base Dockerfiles:
+  - Ruby development (with solargraph, rubocop, etc.)
+  - Node.js/TypeScript development (with typescript-language-server, eslint, etc.)
+- [ ] Configure volume mounts to share dotfiles and nvim config inside containers
+
+#### 2. Set up Docker Compose Templates
+- [ ] Ruby/Rails template for projects like:
+  - hermes (Rails 7.2.2.1, Ruby 3.3.3)
+  - governor
+  - bossanova
+  - apollo
+  - hedwig
+- [ ] Node.js/TypeScript template for projects like:
+  - eva (Node >=16.14.0)
+  - consensus
+  - athena
+  - deejay
+- [ ] Include common services:
+  - PostgreSQL
+  - Redis
+  - Elasticsearch (for projects that need it)
+
+#### 3. Configure LSP Support
+- [ ] Install language servers inside Docker containers
+- [ ] Mount nvim configuration with proper paths
+- [ ] Set up LSP to detect and use container-based servers
+- [ ] Configure Mason.nvim to work with containerized environments
+
+#### 4. Create Helper Scripts
+- [ ] Shell function to spin up dev container for current project
+- [ ] Auto-detection script for project type (Ruby/Node/Go/etc.)
+- [ ] Aliases for common operations:
+  - `dev-up`: Start development container
+  - `dev-nvim`: Attach nvim to running container
+  - `dev-shell`: Get shell in development container
+
+#### 5. Integration with Existing Tools
+- [ ] Ensure tmux works inside containers
+- [ ] Set up SSH agent forwarding for git operations
+- [ ] Configure Docker volumes for:
+  - Gem cache (~/.gem)
+  - npm/yarn cache (~/.npm, ~/.yarn)
+  - ASDF installations
+- [ ] Handle environment variables and secrets
+
+### Example Docker Compose Structure
+
+```yaml
+# docker-compose.dev.yml
+version: '3.8'
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile.ruby
+    volumes:
+      - .:/workspace
+      - ~/.config/nvim:/home/developer/.config/nvim
+      - ~/.gitconfig:/home/developer/.gitconfig
+      - ~/.ssh:/home/developer/.ssh:ro
+      - gem_cache:/usr/local/bundle
+    environment:
+      - BUNDLE_PATH=/usr/local/bundle
+    command: /bin/bash
+    
+volumes:
+  gem_cache:
+```
+
+### Benefits
+- No local Ruby/Node version conflicts
+- Clean system (no global gem/npm pollution)
+- LSP servers have access to all project dependencies
+- Consistent environments across projects
+- Easy onboarding for new projects
+- Can run multiple versions simultaneously
+
+### References
+- VS Code Dev Containers: https://code.visualstudio.com/docs/remote/containers
+- Neovim in Docker: https://github.com/jesseduffield/lazydocker
+- Docker Best Practices: https://docs.docker.com/develop/dev-best-practices/
+
+### Notes
+- Consider using Docker BuildKit for faster builds
+- May want to create a separate repo for shared Docker configurations
+- Could integrate with direnv for automatic container activation

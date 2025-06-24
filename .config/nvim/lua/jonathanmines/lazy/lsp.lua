@@ -62,15 +62,8 @@ return {
                 ["ruby_lsp"] = function()
                   local lspconfig = require("lspconfig")
                   lspconfig.ruby_lsp.setup {
-                    cmd = { "ruby-lsp" },
-
-                    --cmd = function()
-                    --  -- Try to use the version specified in the project
-                    --  local rvm_ruby_version = vim.fn.system("cd " .. vim.fn.getcwd() .. " && rvm current"):gsub("%s+$", "")
-                    --  return {
-                    --    "rvm", rvm_ruby_version, "do", "ruby-lsp"
-                    --  }
-                    --end,
+                    -- Use rbenv shim for ruby-lsp
+                    cmd = { os.getenv("HOME") .. "/.rbenv/shims/ruby-lsp" },
                     capabilities = capabilities
                   }
                 end,
