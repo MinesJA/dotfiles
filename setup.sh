@@ -49,7 +49,7 @@ detect_os() {
 # Install dependencies based on OS
 install_dependencies() {
     print_info "Installing dependencies..."
-    
+
     case $OS in
         macos)
             # Install Homebrew if not present
@@ -57,7 +57,7 @@ install_dependencies() {
                 print_info "Installing Homebrew..."
                 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
             fi
-            
+
             # Install from Brewfile if it exists
             if [[ -f "Brewfile" ]]; then
                 print_info "Installing from Brewfile..."
@@ -68,18 +68,18 @@ install_dependencies() {
                 brew install --cask wezterm font-fira-code-nerd-font
             fi
             ;;
-            
+
         debian)
             print_info "Updating package list..."
             sudo apt update
-            
+
             print_info "Installing packages..."
             sudo apt install -y \
                 stow git tmux neovim zsh curl wget \
                 build-essential cmake python3-pip \
                 ripgrep fd-find bat fzf \
                 fonts-firacode fonts-noto-color-emoji
-            
+
             # Install eza (not in standard repos)
             if ! command -v eza &> /dev/null; then
                 print_info "Installing eza..."
@@ -90,18 +90,18 @@ install_dependencies() {
                 sudo apt update
                 sudo apt install -y eza
             fi
-            
+
             # Install zoxide
             if ! command -v zoxide &> /dev/null; then
                 print_info "Installing zoxide..."
                 curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
             fi
             ;;
-            
+
         arch)
             print_info "Updating package database..."
             sudo pacman -Sy
-            
+
             print_info "Installing packages..."
             sudo pacman -S --noconfirm \
                 stow git tmux neovim zsh curl wget \
@@ -109,7 +109,7 @@ install_dependencies() {
                 ripgrep fd bat fzf eza zoxide \
                 ttf-fira-code noto-fonts-emoji
             ;;
-            
+
         fedora)
             print_info "Installing packages..."
             sudo dnf install -y \
@@ -118,13 +118,13 @@ install_dependencies() {
                 ripgrep fd-find bat fzf \
                 fontconfig-enhanced-defaults \
                 fira-code-fonts google-noto-emoji-fonts
-            
+
             # Install eza
             if ! command -v eza &> /dev/null; then
                 print_info "Installing eza..."
                 sudo dnf install -y eza
             fi
-            
+
             # Install zoxide
             if ! command -v zoxide &> /dev/null; then
                 print_info "Installing zoxide..."
@@ -132,14 +132,14 @@ install_dependencies() {
             fi
             ;;
     esac
-    
+
     print_success "Dependencies installed"
 }
 
 # Install additional tools
 install_additional_tools() {
     print_info "Installing additional tools..."
-    
+
     # Install Powerlevel10k
     if [[ ! -d "$HOME/powerlevel10k" ]]; then
         print_info "Installing Powerlevel10k..."
@@ -147,7 +147,7 @@ install_additional_tools() {
     else
         print_info "Powerlevel10k already installed"
     fi
-    
+
     # Install TPM (Tmux Plugin Manager)
     if [[ ! -d "$HOME/.config/tmux/plugins/tpm" ]]; then
         print_info "Installing Tmux Plugin Manager..."
@@ -156,7 +156,7 @@ install_additional_tools() {
     else
         print_info "TPM already installed"
     fi
-    
+
     # Install asdf
     if [[ ! -d "$HOME/.asdf" ]]; then
         print_info "Installing asdf version manager..."
@@ -164,40 +164,14 @@ install_additional_tools() {
     else
         print_info "asdf already installed"
     fi
-    
-    print_success "Additional tools installed"
-}
 
-# Install Claude CLI
-install_claude() {
-    print_info "Installing Claude CLI..."
-    
-    if ! command -v claude &> /dev/null; then
-        case $OS in
-            macos)
-                if command -v brew &> /dev/null; then
-                    print_info "Installing Claude CLI via Homebrew..."
-                    brew install claude
-                else
-                    print_info "Installing Claude CLI via curl..."
-                    curl -fsSL https://claude.ai/install.sh | sh
-                fi
-                ;;
-            *)
-                print_info "Installing Claude CLI via curl..."
-                curl -fsSL https://claude.ai/install.sh | sh
-                ;;
-        esac
-        print_success "Claude CLI installed"
-    else
-        print_info "Claude CLI already installed"
-    fi
+    print_success "Additional tools installed"
 }
 
 # Setup MCP for Claude
 setup_mcp() {
     print_info "Setting up MCP for Claude..."
-    
+
     # Ensure Docker is available for GitHub MCP
     if ! command -v docker &> /dev/null; then
         print_warning "Docker not found. GitHub MCP requires Docker to run."
@@ -205,12 +179,12 @@ setup_mcp() {
         echo "claude mcp add github -s user -e GITHUB_PERSONAL_ACCESS_TOKEN=\$GITHUB_MCP_TOKEN -- docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN \"ghcr.io/github/github-mcp-server\""
         return
     fi
-    
+
     # Check if GitHub MCP token is available
     if [[ -f ".config/zsh/github_mcp_token.zsh" ]] && grep -q "export GITHUB_MCP_TOKEN=" .config/zsh/github_mcp_token.zsh; then
         print_info "GitHub MCP token found, setting up GitHub MCP..."
         source .config/zsh/github_mcp_token.zsh
-        
+
         if [[ -n "$GITHUB_MCP_TOKEN" ]]; then
             print_info "Adding GitHub MCP server..."
             claude mcp add github -s user -e GITHUB_PERSONAL_ACCESS_TOKEN="$GITHUB_MCP_TOKEN" -- docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN "ghcr.io/github/github-mcp-server"
@@ -224,18 +198,18 @@ setup_mcp() {
         echo "2. Add your GitHub personal access token"
         echo "3. Run: claude mcp add github -s user -e GITHUB_PERSONAL_ACCESS_TOKEN=\$GITHUB_MCP_TOKEN -- docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN \"ghcr.io/github/github-mcp-server\""
     fi
-    
+
     print_success "MCP setup completed"
 }
 
 # Create template files for secrets
 create_template_files() {
     print_info "Creating template files for secrets..."
-    
+
     # Create directories if they don't exist
     mkdir -p .config/zsh
     mkdir -p .config/wezterm
-    
+
     # OpenAI token template
     if [[ ! -f ".config/zsh/openai_token.zsh.example" ]]; then
         cat > .config/zsh/openai_token.zsh.example << 'EOF'
@@ -244,7 +218,7 @@ create_template_files() {
 # export OPENAI_API_KEY="your-openai-api-key-here"
 EOF
     fi
-    
+
     # GitHub token template
     if [[ ! -f ".config/zsh/github_token.zsh.example" ]]; then
         cat > .config/zsh/github_token.zsh.example << 'EOF'
@@ -253,7 +227,7 @@ EOF
 # export GITHUB_TOKEN="your-github-token-here"
 EOF
     fi
-    
+
     # GitHub MCP token template
     if [[ ! -f ".config/zsh/github_mcp_token.zsh.example" ]]; then
         cat > .config/zsh/github_mcp_token.zsh.example << 'EOF'
@@ -262,7 +236,7 @@ EOF
 # export GITHUB_MCP_TOKEN="your-github-mcp-token-here"
 EOF
     fi
-    
+
     # Work aliases template
     if [[ ! -f ".config/zsh/work_aliases.zsh.example" ]]; then
         cat > .config/zsh/work_aliases.zsh.example << 'EOF'
@@ -272,7 +246,7 @@ EOF
 # alias work-ssh='ssh user@work-server.com'
 EOF
     fi
-    
+
     # Kubectl aliases template
     if [[ ! -f ".config/zsh/kubectl_aliases.zsh.example" ]]; then
         cat > .config/zsh/kubectl_aliases.zsh.example << 'EOF'
@@ -283,7 +257,7 @@ EOF
 # alias kgd='kubectl get deployment'
 EOF
     fi
-    
+
     # WezTerm SSH template
     if [[ ! -f ".config/wezterm/ssh.lua.example" ]]; then
         cat > .config/wezterm/ssh.lua.example << 'EOF'
@@ -299,14 +273,14 @@ return {
 }
 EOF
     fi
-    
+
     print_success "Template files created"
 }
 
 # Setup stow symlinks
 setup_stow() {
     print_info "Setting up symlinks with GNU Stow..."
-    
+
     # Backup existing files
     backup_dir="$HOME/.dotfiles-backup-$(date +%Y%m%d-%H%M%S)"
     files_to_backup=(
@@ -319,7 +293,7 @@ setup_stow() {
         ".config/zsh"
         ".config/git"
     )
-    
+
     need_backup=false
     for file in "${files_to_backup[@]}"; do
         if [[ -e "$HOME/$file" && ! -L "$HOME/$file" ]]; then
@@ -327,11 +301,11 @@ setup_stow() {
             break
         fi
     done
-    
+
     if [[ "$need_backup" == true ]]; then
         print_warning "Backing up existing files to $backup_dir"
         mkdir -p "$backup_dir"
-        
+
         for file in "${files_to_backup[@]}"; do
             if [[ -e "$HOME/$file" && ! -L "$HOME/$file" ]]; then
                 print_info "Backing up $file"
@@ -339,11 +313,11 @@ setup_stow() {
             fi
         done
     fi
-    
+
     # Run stow
     print_info "Creating symlinks..."
     stow -v .
-    
+
     print_success "Symlinks created"
 }
 
@@ -351,13 +325,13 @@ setup_stow() {
 set_default_shell() {
     if [[ "$SHELL" != *"zsh"* ]]; then
         print_info "Setting Zsh as default shell..."
-        
+
         # Add zsh to /etc/shells if not present
         if ! grep -q "$(which zsh)" /etc/shells; then
             print_info "Adding zsh to /etc/shells..."
             echo "$(which zsh)" | sudo tee -a /etc/shells
         fi
-        
+
         chsh -s "$(which zsh)"
         print_success "Zsh set as default shell. Please log out and back in for changes to take effect."
     else
@@ -368,21 +342,20 @@ set_default_shell() {
 # Main setup function
 main() {
     print_info "Starting dotfiles setup..."
-    
+
     # Change to script directory
     cd "$(dirname "$0")"
-    
+
     detect_os
     install_dependencies
     install_additional_tools
-    install_claude
     create_template_files
     setup_stow
     setup_mcp
     set_default_shell
-    
+
     print_success "Setup complete!"
-    
+
     # Post-installation instructions
     echo
     print_info "Post-installation steps:"

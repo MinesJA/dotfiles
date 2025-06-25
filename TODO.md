@@ -1,5 +1,123 @@
 # Dotfiles TODO
 
+## Setup .gitconfig to be compatible with work and personal
+# Git Config Options for Multiple Machines
+
+### Method 1: Conditional Includes (Best for Most Cases)
+
+Create machine-specific config files and use Git's conditional includes:
+
+**Main `.gitconfig`:**
+```ini
+[includeIf "gitdir:~/work/"]
+    path = ~/.gitconfig-work
+[includeIf "gitdir:~/personal/"]
+    path = ~/.gitconfig-personal
+[includeIf "gitdir:/Users/john/company-repos/"]
+    path = ~/.gitconfig-work
+
+# Default config for everything else
+[user]
+    name = John Doe
+    email = john@personal.com
+
+[core]
+    editor = code --wait
+# ... other shared settings
+```
+
+**`.gitconfig-work`:**
+```ini
+[user]
+    name = John Doe
+    email = john.doe@company.com
+    signingkey = ABC123
+```
+
+**`.gitconfig-personal`:**
+```ini
+[user]
+    name = John Doe
+    email = john@personal.com
+    signingkey = XYZ789
+```
+
+### Method 2: Local Override File (Simplest)
+
+**Main `.gitconfig`:**
+```ini
+# Shared configuration
+[core]
+    editor = code --wait
+[init]
+    defaultBranch = main
+# ... other shared settings
+
+# Include local overrides (this file is gitignored)
+[include]
+    path = ~/.gitconfig.local
+```
+
+**`.gitconfig.local` (gitignored):**
+```ini
+[user]
+    name = John Doe
+    email = john.doe@company.com
+```
+
+**In your dotfiles repo:**
+- Add `.gitconfig.local` to `.gitignore`
+- Create `.gitconfig.local.example` with template
+
+### Method 3: Environment-Based Template
+
+Use a simple script or Makefile to generate the config:
+
+**`.gitconfig.template`:**
+```ini
+[user]
+    name = ${GIT_USER_NAME}
+    email = ${GIT_USER_EMAIL}
+
+[core]
+    editor = code --wait
+# ... other settings
+```
+
+**Setup script:**
+```bash
+#!/bin/bash
+if [[ "$HOSTNAME" == *"work"* ]]; then
+    export GIT_USER_EMAIL="john.doe@company.com"
+else
+    export GIT_USER_EMAIL="john@personal.com"
+fi
+export GIT_USER_NAME="John Doe"
+
+envsubst < .gitconfig.template > ~/.gitconfig
+```
+
+### Method 4: Hostname-Based Detection
+
+**`.gitconfig`:**
+```ini
+[includeIf "onbranch:**"]
+    path = ~/.gitconfig-common
+
+# This gets processed by your dotfiles setup script
+# HOSTNAME_CONFIG_INCLUDE
+```
+
+Then your setup script replaces `# HOSTNAME_CONFIG_INCLUDE` with the appropriate include.
+
+### Recommendation
+
+**Use Method 1 (Conditional Includes)** if you organize your repos by work/personal directories. It's the cleanest and most Git-native approach.
+
+**Use Method 2 (Local Override)** if you want the simplest setup with minimal configuration. Just remember to create the `.gitconfig.local` file on each machine.
+
+Both approaches keep your dotfiles repo clean while allowing machine-specific customization.
+
 ## Docker-based Development Environment
 
 **Goal**: Set up development in Docker containers to avoid installing packages/gems locally while maintaining LSP support in nvim.
@@ -78,7 +196,7 @@ services:
     environment:
       - BUNDLE_PATH=/usr/local/bundle
     command: /bin/bash
-    
+
 volumes:
   gem_cache:
 ```
@@ -114,11 +232,11 @@ Currently have plain text credentials scattered across the system (e.g., `/etc/o
    # Install
    sudo pacman -S pass  # Arch
    sudo apt install pass  # Debian/Ubuntu
-   
+
    # Setup
    pass init your-gpg-id
    pass insert vpn/nordvpn
-   
+
    # Usage example
    pass show vpn/nordvpn | sudo openvpn --config file.ovpn --auth-user-pass /dev/stdin
    ```
@@ -127,7 +245,7 @@ Currently have plain text credentials scattered across the system (e.g., `/etc/o
    ```bash
    # Store credential
    secret-tool store --label="NordVPN" service nordvpn username youruser
-   
+
    # Retrieve credential
    secret-tool lookup service nordvpn
    ```
@@ -137,7 +255,7 @@ Currently have plain text credentials scattered across the system (e.g., `/etc/o
    # Encrypt
    gpg -c auth.txt  # Creates auth.txt.gpg
    rm auth.txt      # Remove plain text version
-   
+
    # Use
    gpg -d auth.txt.gpg 2>/dev/null | sudo openvpn --config file.ovpn --auth-user-pass /dev/stdin
    ```

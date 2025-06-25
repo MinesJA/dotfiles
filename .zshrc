@@ -25,9 +25,6 @@ if [[ $(uname) == "Darwin" ]]; then
   export PATH="$PATH:$HOME/go/bin"
   export PATH="/usr/local/bin:$PATH"
 
-  # NOTE!!!
-  # Path must have /Users/jonathan.mines/bin: at the beggining
-  # workstation keeps trying to change this. Do not let it win
   export PATH="$HOME/bin:$PATH"
 
   # Initialize rbenv
@@ -45,6 +42,8 @@ fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+alias python=python3
 
 eval "$(fzf --zsh)"
 
@@ -83,7 +82,6 @@ if [[ $(uname) == "Linux" ]]; then
   fi
 fi
 
-alias claude=/usr/local/bin/claude
 
 # Ruby project setup function (macOS)
 if [[ $(uname) == "Darwin" ]]; then
