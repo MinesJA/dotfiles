@@ -32,10 +32,11 @@ if [[ $(uname) == "Darwin" ]]; then
 
 elif [[ $(uname) == "Linux" ]]; then
   source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
-  export PATH="/home/jonathanmines/.local/bin/:$PATH"
-  export PATH="/home/jonathanmines/.pyenv/bin/:$PATH"
+  export PATH="$HOME/.local/bin/:$PATH"
+  export PATH="$HOME/.pyenv/bin/:$PATH"
   export FrameworkPathOverride=/lib/mono/4.7.1-api/
 
+  alias claude="$HOME/.claude/local/claude"
 else
   echo 'Unknown OS!'
 fi

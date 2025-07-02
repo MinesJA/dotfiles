@@ -1,9 +1,8 @@
-
 ## How to add Github MCP
 
 # Adds Github MCP server to the User (global) scope
 ```
-claude mcp add github -s user -e GITHUB_PERSONAL_ACCESS_TOKEN={github_token} -- docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN "ghcr.io/github/github-mcp-server"
+claude mcp add github -s user -e GITHUB_PERSONAL_ACCESS_TOKEN=$GITHUB_MCP_TOKEN -- docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN "ghcr.io/github/github-mcp-server"
 ```
 
 Where does this actually get saved though? I can't figure out where this is actually persisted. If I add an mcp.json to .claude it just scopes it to the project not globally.

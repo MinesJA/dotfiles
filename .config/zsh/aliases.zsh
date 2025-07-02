@@ -13,3 +13,7 @@ alias venv="[ -f venv/bin/activate ] && source venv/bin/activate || [ -f .venv/b
 
 # Reset keyboard rate
 alias resetkeys="xset r rate 250 50"
+
+function github_mcp(){
+  claude mcp add github -s user -e GITHUB_PERSONAL_ACCESS_TOKEN=$GITHUB_MCP_TOKEN -- docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN "ghcr.io/github/github-mcp-server"
+}

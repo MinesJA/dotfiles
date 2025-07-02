@@ -272,3 +272,6 @@ Currently have plain text credentials scattered across the system (e.g., `/etc/o
 - [ ] Migrate existing credentials to secure storage
 - [ ] Update scripts to use secure credential retrieval
 - [ ] Remove all plain text credential files
+
+## Look into Claude Github Actions
+https://docs.anthropic.com/en/docs/claude-code/github-actions
